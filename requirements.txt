@@ -1,0 +1,4 @@
+requests
+BeautifulSoup
+httpx
+bs4
