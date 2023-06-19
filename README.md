@@ -104,8 +104,30 @@ for li in lis:
 2. 为了转换为 PDF, 需要安装 [Pandoc](https://pandoc.org/)，(博主该功能我并没有测试)。
 3. 该博客导出工具再我的需求下就是拿到md文件，现在的功能我还是比较满意
 
+## 对于安装aria2的问题
+
+我参考了以下博文：
+
+[电脑Windows安装Aria2配置详细教程全能的下载神器](https://blog.csdn.net/weizuer123/article/details/127411328)
+
+[Aria2小白入门级部署](https://www.bilibili.com/read/cv21314846?from=search)
+
+[超简单的Aria2使用教程](https://tomford1986.blogspot.com/2018/01/aria2.html)
+
+[Aria2傻瓜安装部署指南](https://controlnet.space/2021/06/08/note/aria2-setup/)
+
+[Aria2 & YAAW 使用说明](http://aria2c.com/usage.html)
+
+如果想要下载配置好的aria2，可以在CSDN私聊[我的博客](https://blog.csdn.net/m0_67623521?type=blog) 。
+
+## Author
+
+[allenmirac-CSDNExporter](https://github.com/allenmirac/CSDNExporter)
+
 # 巨人的肩膀
 
-[axzml.CSDNExporter](https://github.com/axzml/CSDNExporter)
+[axzml-CSDNExporter](https://github.com/axzml/CSDNExporter)
 
 [导出 CSDN 博客至 Markdown 或 PDF 格式 (近乎完美)](https://blog.csdn.net/Eric_1993/article/details/104772437)
+
+[获取指定博主所有专栏链接及博文链接](https://blog.csdn.net/qq_53381910/article/details/130816856)
