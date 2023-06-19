@@ -1,21 +1,21 @@
 @echo off
 @title CSDNExporter
 
-set download_category="true"
+set download_category="false"
 set download_article="false"
-set userName="m0_67623521"
+set userName="你的用户名"
 set start_page=1
 set page_num=100
 set markdown_dir=markdown
 set pdf_dir=pdf
-set article_url="https://blog.csdn.net/m0_67623521/article/details/128350826"
+set article_url="一篇文章的链接"
 
 if %download_category% == "true" (
   echo "Obtain blog directory link: save in userName.txt........"
   python -u link.py %userName%
 )
 
-for /f "tokens=* delims=" %%a in (m0_67623521.txt) do (
+for /f "tokens=* delims=" %%a in (userName.txt) do (
   echo %%a
   if %download_category% == "true" (
       echo "Download a category"
