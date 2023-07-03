@@ -155,6 +155,7 @@ def download_csdn_single_page(details_url, md_dir, with_title=True, pdf_dir='pdf
     soup = BeautifulSoup(response.content, 'html.parser', from_encoding="utf-8")
     title = soup.find_all('h1', {'class': 'title-article'})[0].string  ## 使用 html 的 title 作为 md 文件名
     title = '_'.join(title.replace('*', '').strip().split())
+    title = title.replace('/',"或") #如果文章标题出现'/'，路径会错误
     md_file = join(md_dir, title + '.md')
     print('Export Markdown File To {}'.format(md_file))
     html2md(details_url, md_file, with_title=with_title, is_win=is_win)
