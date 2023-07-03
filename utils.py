@@ -93,6 +93,7 @@ class Parser(object):
                 soup.contents.append(NavigableString('\n'))
             elif tag in ['li']:
                 soup.contents.insert(0, NavigableString('+ '))
+                soup.contents.append(NavigableString('\n'))
             # elif tag == 'blockquote':
                 # soup.contents.insert(0, NavigableString('> '))
             elif tag == 'img':
