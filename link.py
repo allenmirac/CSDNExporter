@@ -8,7 +8,7 @@ def printk(value):
     print(value)
     exit()
 
-user = sys.argv[1]
+user = sys.argv[1] # 'm0_67623521'
 
 url = "https://blog.csdn.net/{}".format(user)
 # 构造请求头
@@ -32,9 +32,9 @@ lis = div.find_all("li")
 titles = []
 infos = {}
 # 爬取专栏链接及链接名
-if os.path.isfile(user+".txt"):
+if os.path.isfile(user+"_categoty_link.txt"):
     # 如果文件存在，删除文件
-    os.remove(user+".txt")
+    os.remove(user+"_categoty_link.txt")
 for li in lis:
     # print("####")
     url = li.find("a").attrs['href']
@@ -42,7 +42,13 @@ for li in lis:
     titles.append(title)
     infos[title] = {"url":url}
 
+    # with open(user+'_categoty_link.txt','w') as f1:
+    #     pass
     # print("[+]"+title+url)
-    with open(user+'.txt','a+') as f:    #设置文件对象
-        f.write(url)
-        f.write('\n')
+    with open(user+'_categoty_link.txt','a+') as f1:    #设置文件对象
+        f1.write(url)
+        f1.write('\n')
+
+    # with open(user+'_categoty_title.txt','a+') as f2:
+    #     f2.write(title)
+    #     f2.write('\n')

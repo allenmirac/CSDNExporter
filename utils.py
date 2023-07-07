@@ -7,6 +7,8 @@ from bs4 import BeautifulSoup, Tag, NavigableString, Comment
 import os
 from os.path import join, exists
 import re
+import subprocess
+from download_img_queue import Download_img_queue
 
 special_characters = {
     "&lt;": "<", "&gt;": ">", "&nbsp": " ",
@@ -14,15 +16,16 @@ special_characters = {
 }
 
 class Parser(object):
-    def __init__(self, html, title, is_win=False):
+    def __init__(self, html, title, img_queue_downloader, is_win=True):
         self.html = html
         self.soup = BeautifulSoup(html, 'html.parser')
         self.outputs = []
-        self.fig_dir = f'./figures/{title}'+'.assets'
+        title = title.replace('.','').replace(':', ' ') # 文章标题中含有路径相关字符
+        self.fig_dir = f'./figures/{title}'
         self.pre = False
         self.equ_inline = False
         self.is_win = is_win
-
+        self.img_queue_downloader = img_queue_downloader
         self.recursive(self.soup)
 
     def remove_comment(self, soup):
@@ -97,30 +100,55 @@ class Parser(object):
             # elif tag == 'blockquote':
                 # soup.contents.insert(0, NavigableString('> '))
             elif tag == 'img':
-                if not exists(self.fig_dir): # 博客中有图片的时候才会创建图片目录，只会创建一次
-                    os.makedirs(self.fig_dir)
+                
                 src = soup.attrs['src']
+                # print("src=", src)
                 # pattern = r'.*\.png'
-                pattern = r'(.*\..*\?)|(.*\.(png|jpeg|jpg))'
+
+                # 使用本地下载的链接
+                if not exists(self.fig_dir): # 博客中有图片的时候才会创建图片目录，只会创建一次
+                    # print("makedir")
+                    os.makedirs(self.fig_dir)
+                pattern = r'(.*\..*\?)|(.*\.(png|jpeg|jpg|gif|ico))'
+                # print(re.findall(pattern, src))
                 result_tuple = re.findall(pattern, src)[0]
+                # print(result_tuple)
                 if result_tuple[0]:
                     img_file = result_tuple[0].split('/')[-1].rstrip('?')
                 else:
                     img_file = result_tuple[1].split('/')[-1].rstrip('?')
                 # img_file = re.findall(pattern, src)[0][0].split('/')[-1].rstrip('?') ## e.g. https://img-blog.csdnimg.cn/20200228210146931.png?
-                img_file = join(self.fig_dir, img_file)
-                if self.is_win:
-                    download_img_cmd = 'aria2c.exe --file-allocation=none -c -x 10 -s 10 -o {} {}'.format(img_file, src)
-                else:
-                    download_img_cmd = 'aria2c --file-allocation=none -c -x 10 -s 10 -o {} {}'.format(img_file, src)
-                if not exists(img_file):
-                    os.system(download_img_cmd)
+                
+                img_file = os.path.join(self.fig_dir, img_file)
+                img_file = img_file.replace("\\", "/")
+                # img_file = img_file.replace(".", "")
+                # print(img_file)
+                
+                # 单线程下载 图片
+                # if self.is_win:
+                #     # download_img_cmd = 'aria2c.exe --file-allocation=none -c -x 10 -s 10 -o {} {}'.format(img_file, src)
+                #     download_img_cmd = ["aria2c.exe", "--file-allocation=none", "-c", "-x", "10", "-s", "10", "-o", save_path, url]
+                # else:
+                #     # download_img_cmd = 'aria2c --file-allocation=none -c -x 10 -s 10 -o {} {}'.format(img_file, src)
+                #     download_img_cmd = ["aria2c", "--file-allocation=none", "-c", "-x", "10", "-s", "10", "-o", save_path, url]
+                # if not exists(img_file):
+                #     # os.system(download_img_cmd)
+                #     subprocess.run(download_img_cmd)
                 # soup.attrs['src'] = img_file
                 # self.outputs.append('\n' + str(soup.parent) + '\n')
+
+                # 多线程下载
+                # 调用 download_images 函数，传入图片链接和保存路径的列表
+                # download_img_queue.download_images(src, img_file, self.is_win)
+                self.img_queue_downloader.add_task(src, img_file, self.is_win)
+
                 img_name = os.path.basename(img_file)
-                img_dir = '.'+img_file.replace('\\', '/') # 在上一级目录
-                code = f'![{img_name}]({img_dir})'
-                self.outputs.append('\n' + code + '\n')
+                img_dir = '.'+img_file # 在上一级目录
+                self.outputs.append('\n!['+img_name+']('+img_dir+')\n')
+
+                # 图片直接使用CSDN的链接
+                # code = f'![]({src})'
+                # self.outputs.append('\n' + code + '\n')
                 return
         if not hasattr(soup, 'children'): return
         for child in soup.children:

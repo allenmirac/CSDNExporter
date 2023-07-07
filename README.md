@@ -17,7 +17,7 @@ CSDN 博客导出工具, 用于将 CSDN 博客导出为 Markdown / PDF 格式. �
 utils.py 增加了一个参数title
 
 ```python
-def __init__(self, html, title, is_win=False):
+def __init__(self, html, title, is_win=True):
     self.html = html
     self.soup = BeautifulSoup(html, 'html.parser')
     self.outputs = []

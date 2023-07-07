@@ -1,4 +1,3 @@
-#!/bin/bash
 #############################
 # CopyRight ~~~~~~ ##########
 # Author: allenmirac ########
