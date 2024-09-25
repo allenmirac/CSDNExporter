@@ -124,6 +124,30 @@ for li in lis:
 
 [allenmirac-CSDNExporter](https://github.com/allenmirac/CSDNExporter)
 
+## 使用方法
+
+1、获取作者的作用文章
+
+
+打开作者主页，看到浏览器上面的链接框，比如：https://blog.csdn.net/m0_67623521?type=blog， 这样就可以把m0_67623521用户名提取出来，然后修改run.py，新建userName.txt，用于保存目录链接，之后就会自动下载博客，并且下载图片保存下来
+
+此时：
+```python
+download_category = True
+download_article = False
+```
+
+
+2、获取一篇文章
+
+直接修改run.py的article_url 改为你要获取的文章，
+
+此时：
+```python
+download_category = True
+download_article = False
+```
+
 # 巨人的肩膀
 
 [axzml-CSDNExporter](https://github.com/axzml/CSDNExporter)
